@@ -228,8 +228,8 @@ export async function handler(chatUpdate) {
         const senderLidEarly = await resolveJid(m.sender, this, m.chat)
 
         const senderIds = [
-            senderLidEarly,    
-            m.sender,      
+            senderLidEarly,      
+            m.sender,          
             m.key?.participant,
             m.key?.participantAlt,
             m.key?.senderPn,
