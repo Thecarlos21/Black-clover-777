@@ -33,7 +33,6 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
         )
         if (Buffer.isBuffer(stiker)) fs.writeFileSync(tmpPath, stiker)
       } catch (e) {
-        // Reintento con modo 'full' como fallback
         stiker = await sticker(
           media,
           false,
