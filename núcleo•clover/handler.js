@@ -225,11 +225,14 @@ export async function handler(chatUpdate) {
         if (typeof m.text!== "string") m.text = ""
         globalThis.setting = settings
 
+        // ── FIX LID: resolver el JID real ANTES de calcular isOwner ──
+        // NO mutar m.sender (getter de solo lectura en Baileys)
+        // Incluimos el JID resuelto en senderIds para que checkOwner lo compare
         const senderLidEarly = await resolveJid(m.sender, this, m.chat)
 
         const senderIds = [
-            senderLidEarly,      
-            m.sender,          
+            senderLidEarly,      // JID resuelto (@s.whatsapp.net)
+            m.sender,            // original (puede ser @lid)
             m.key?.participant,
             m.key?.participantAlt,
             m.key?.senderPn,
@@ -319,27 +322,52 @@ export async function handler(chatUpdate) {
             }
             participants = groupMetadata?.participants || []
         }
+        // norm: extrae solo dígitos para comparar @lid vs @s.whatsapp.net
+        const norm = id => String(id || '').split('@')[0].replace(/\D/g, '')
+        const senderNum = norm(senderLidEarly || m.sender)
+        const botNum    = norm(botJid)
+
+        const matchSender = (p) => {
+            if (!p) return false
+            if (p.id === senderLidEarly)  return true   // JID resuelto exacto
+            if (p.id === m.sender)        return true   // @lid original
+            if (p.lid === m.sender)       return true   // campo lid del participante
+            if (p.lid === senderLidEarly) return true
+            // phoneNumber existe cuando p.id es @lid en grupos cifrados
+            if (p.phoneNumber && norm(String(p.phoneNumber)) === senderNum) return true
+            // comparación solo dígitos (cubre @lid cuyo número coincide)
+            const pn = norm(p.id || p.jid || p.lid)
+            if (pn && pn.length >= 7 && (pn === senderNum || senderNum.endsWith(pn) || pn.endsWith(senderNum))) return true
+            return false
+        }
+
+        const matchBot = (p) => {
+            if (!p) return false
+            if (p.id === botJid)    return true
+            if (p.lid === botLid)   return true
+            if (p.phoneNumber && norm(String(p.phoneNumber)) === botNum) return true
+            const pn = norm(p.id || p.jid || p.lid)
+            if (pn && pn.length >= 7 && (pn === botNum || botNum.endsWith(pn) || pn.endsWith(botNum))) return true
+            return false
+        }
+
         let participant = {}, botParticipant = {}
         for (const p of participants) {
-            const pIds = [p?.id, p?.jid, p?.lid].filter(Boolean)
-            // phoneNumber puede existir cuando p.id es un @lid
-            const pPhone = p?.phoneNumber ? normalizeJid(String(p.phoneNumber)) : null
-            const pNum = pPhone || normalizeJid(p?.id || p?.jid || p?.lid)
-            const pNums = [...new Set([pNum, pPhone].filter(Boolean))]
-            const pFull = [...pIds, pPhone].filter(Boolean).join(' ')
-            const senderMatch =
-                senderNums.some(sn => pNums.some(pn => pn && (sn === pn || sn.includes(pn) || pn.includes(sn)))) ||
-                senderIds.some(s => pFull.includes(s)) ||
-                pIds.includes(senderLidEarly) ||
-                pIds.includes(m.sender)
-            if (!participant.id && senderMatch) {
-                participant = p
-            }
-            if (!botParticipant.id && (pNums.includes(botNumber) || pIds.includes(botLid) || pIds.includes(botJid))) {
-                botParticipant = p
-            }
+            if (!participant.id && matchSender(p)) participant = p
+            if (!botParticipant.id && matchBot(p)) botParticipant = p
             if (participant.id && botParticipant.id) break
         }
+
+        // DEBUG TEMPORAL — quitar después de confirmar que admins funciona
+        if (m.isGroup) {
+            console.log('[ADMIN DEBUG] senderLidEarly:', senderLidEarly)
+            console.log('[ADMIN DEBUG] m.sender:', m.sender)
+            console.log('[ADMIN DEBUG] senderNum:', senderNum)
+            console.log('[ADMIN DEBUG] participant encontrado:', participant?.id || 'NINGUNO')
+            console.log('[ADMIN DEBUG] participant.admin:', participant?.admin || 'null')
+            console.log('[ADMIN DEBUG] participants IDs:', participants.map(p => p.id).join(', '))
+        }
+
         const isRAdmin = participant.admin === 'superadmin'
         const isAdmin = isRAdmin || participant.admin === 'admin'
         const isBotAdmin =!!botParticipant.admin
