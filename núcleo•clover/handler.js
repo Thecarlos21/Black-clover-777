@@ -226,10 +226,10 @@ export async function handler(chatUpdate) {
         globalThis.setting = settings
 
         const senderLidEarly = await resolveJid(m.sender, this, m.chat)
-        if (senderLidEarly && senderLidEarly !== m.sender) m.sender = senderLidEarly
 
         const senderIds = [
-            m.sender,
+            senderLidEarly,  
+            m.sender,         
             m.key?.participant,
             m.key?.participantAlt,
             m.key?.senderPn,
@@ -238,7 +238,7 @@ export async function handler(chatUpdate) {
 
         const senderNums = senderIds.map(v => normalizeJid(v)).filter(Boolean)
         const senderFullStr = senderIds.join(' ')
-        const senderNumber = senderNums[0] || normalizeJid(m.sender)
+        const senderNumber = senderNums[0] || normalizeJid(senderLidEarly || m.sender)
 
         const parseList = (arr) => {
             if (!arr) return []
