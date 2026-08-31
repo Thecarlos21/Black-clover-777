@@ -225,6 +225,9 @@ export async function handler(chatUpdate) {
         if (typeof m.text!== "string") m.text = ""
         globalThis.setting = settings
 
+        const senderLidEarly = await resolveJid(m.sender, this, m.chat)
+        if (senderLidEarly && senderLidEarly !== m.sender) m.sender = senderLidEarly
+
         const senderIds = [
             m.sender,
             m.key?.participant,
@@ -292,8 +295,7 @@ export async function handler(chatUpdate) {
         m.exp += Math.ceil(Math.random() * 10)
         let usedPrefix
 
-        const senderLid = await resolveJid(m.sender, this, m.chat)
-        m.sender        = senderLid 
+        // m.sender ya fue resuelto arriba (fix LID early)
         const botNumber  = normalizeJid(botJid)
         const botLid     = await resolveJid(botJid, this, m.chat)
         let groupMetadata = null
@@ -321,7 +323,7 @@ export async function handler(chatUpdate) {
         for (const p of participants) {
             const pNum = normalizeJid(p?.id || p?.jid || p?.lid)
             const pFull = [p?.id, p?.jid, p?.lid].filter(Boolean).join(' ')
-            if (!participant.id && (senderNums.includes(pNum) || senderIds.some(s => pFull.includes(s)) || [p?.id, p?.jid, p?.lid].includes(senderLid) || [p?.id, p?.jid].includes(m.sender))) {
+            if (!participant.id && (senderNums.includes(pNum) || senderIds.some(s => pFull.includes(s)) || [p?.id, p?.jid, p?.lid].includes(senderLidEarly) || [p?.id, p?.jid].includes(m.sender))) {
                 participant = p
             }
             if (!botParticipant.id && (pNum === botNumber || [p?.id, p?.jid, p?.lid].includes(botLid) || [p?.id, p?.jid].includes(botJid))) {
