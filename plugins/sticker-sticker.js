@@ -1,7 +1,4 @@
-import { sticker } from '../lib/sticker.js'
-import uploadFile from '../lib/uploadFile.js'
-import uploadImage from '../lib/uploadImage.js'
-import { webp2png } from '../lib/webp2mp4.js'
+import { sticker } from '#lib/sticker.js'
 import fs from 'fs'
 import path from 'path'
 import { fileTypeFromBuffer } from 'file-type'
@@ -36,19 +33,15 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
         )
         if (Buffer.isBuffer(stiker)) fs.writeFileSync(tmpPath, stiker)
       } catch (e) {
-        let out
-        if (/webp/.test(mime)) out = await webp2png(media)
-        else if (/image/.test(mime)) out = await uploadImage(media)
-        else if (/video/.test(mime)) out = await uploadFile(media)
-        if (typeof out !== 'string') out = await uploadImage(media)
+        // Reintento con modo 'full' como fallback
         stiker = await sticker(
+          media,
           false,
-          out,
           global.packsticker || 'Black Clover Pack',
           global.author || 'By The Carlos',
           ['🤖', '⚡', '🔥'],
           512,
-          { type: 'default' }
+          { mode: 'full' }
         )
         if (Buffer.isBuffer(stiker)) fs.writeFileSync(tmpPath, stiker)
       }
