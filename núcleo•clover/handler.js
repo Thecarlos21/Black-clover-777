@@ -12,9 +12,122 @@ const { proto } = (await import('@whiskeysockets/baileys')).default
 const isNumber = x => typeof x === 'number' &&!isNaN(x)
 const delay = ms => isNumber(ms) && new Promise(resolve => setTimeout(resolve, ms))
 
-const lidCache = new Map()
+const jidCache      = new Map()
 const metadataCache = new Map()
+
+const JID_TTL_DM    = 7  * 24 * 60 * 60_000
+const JID_TTL_GROUP = 24 * 60 * 60_000
+const META_TTL      = 24 * 60 * 60_000
+
+setInterval(() => {
+  const now = Date.now()
+  for (const [key, val] of jidCache) {
+    if (now > val.exp) jidCache.delete(key)
+  }
+}, 10 * 60_000)
+
 const normalizeJid = jid => String(jid || '').split('@')[0].replace(/\D/g, '')
+
+function isRealJid(jid) {
+  return /^\d+@s\.whatsapp\.net$/.test(String(jid || ''))
+}
+
+function normalizeToJid(phone) {
+  if (!phone) return null
+  const base = typeof phone === 'number' ? phone.toString() : String(phone).replace(/\D/g, '')
+  return base ? `${base}@s.whatsapp.net` : null
+}
+
+async function resolveLidToRealJid(lid, conn, groupChatId) {
+  const input = String(lid || '').trim()
+  if (!input) return input
+  if (isRealJid(input)) return input
+
+  const isLid = input.endsWith('@lid')
+  if (!isLid && !groupChatId?.endsWith('@g.us')) return input
+
+  const hit = jidCache.get(input)
+  if (hit) return hit.resolved
+
+  if (!groupChatId?.endsWith('@g.us')) {
+    try {
+      const result = await Promise.race([
+        conn.onWhatsApp(input),
+        new Promise((_, rej) => setTimeout(() => rej('timeout'), 2000))
+      ])
+      const realJid = result?.[0]?.jid
+      if (realJid) {
+        jidCache.set(input, { resolved: realJid, exp: Date.now() + JID_TTL_DM })
+        return realJid
+      }
+    } catch {}
+    return input
+  }
+
+  let metadata = null
+
+  const globalMeta = global.groupMetaCache?.get?.(groupChatId)
+  if (globalMeta && Date.now() - globalMeta.ts < META_TTL) metadata = globalMeta.data
+
+  if (!metadata) {
+    const cached = metadataCache.get(groupChatId)
+    if (cached && Date.now() - cached.ts < META_TTL) metadata = cached.data
+  }
+
+  if (!metadata) {
+    try {
+      metadata = await Promise.race([
+        conn.groupMetadata(groupChatId),
+        new Promise((_, rej) => setTimeout(() => rej('timeout'), 3000))
+      ])
+      metadataCache.set(groupChatId, { data: metadata, ts: Date.now() })
+    } catch {
+      return input
+    }
+  }
+
+  const participants = metadata?.participants || []
+  const participant  = participants.find(p =>
+    p.id === input ||
+    p.lid === input ||
+    p.id?.split(':')[0] === input.split(':')[0] ||
+    p.id?.split('@')[0] === input.split('@')[0]
+  )
+
+  if (participant) {
+    if (participant.phoneNumber) {
+      const realJid = normalizeToJid(participant.phoneNumber)
+      if (realJid) {
+        if (jidCache.size >= 500) jidCache.delete(jidCache.keys().next().value)
+        jidCache.set(input, { resolved: realJid, exp: Date.now() + JID_TTL_GROUP })
+        return realJid
+      }
+    }
+    if (isRealJid(participant.id)) {
+      jidCache.set(input, { resolved: participant.id, exp: Date.now() + JID_TTL_GROUP })
+      return participant.id
+    }
+  }
+
+  return input
+}
+
+async function resolveJid(sender, conn, chat) {
+  const hit = jidCache.get(sender)
+  if (hit) return hit.resolved
+
+  if (isRealJid(sender)) {
+    const ttl = chat?.endsWith('@g.us') ? JID_TTL_GROUP : JID_TTL_DM
+    jidCache.set(sender, { resolved: sender, exp: Date.now() + ttl })
+    return sender
+  }
+
+  const resolved = await resolveLidToRealJid(sender, conn, chat)
+  const ttl = chat?.endsWith('@g.us') ? JID_TTL_GROUP : JID_TTL_DM
+  if (jidCache.size >= 500) jidCache.delete(jidCache.keys().next().value)
+  jidCache.set(sender, { resolved, exp: Date.now() + ttl })
+  return resolved
+}
 const getRawOwner = v => Array.isArray(v)? String(v[0]) : String(v || '')
 
 const emojiList = ['❤️','😂','😍','🔥','😎','👍','😭','🥵','😳','🙏','💀','🤡','✨','💯','🌚','😈','🤙','🥶','🤔','😴']
@@ -179,27 +292,9 @@ export async function handler(chatUpdate) {
         m.exp += Math.ceil(Math.random() * 10)
         let usedPrefix
 
-        async function getLidFromJid(id) {
-            if (!id) return id
-            if (id.endsWith('@lid')) return id
-            if (lidCache.has(id)) return lidCache.get(id)
-            try {
-                const res = await Promise.race([
-                    this.onWhatsApp(id),
-                    new Promise((_, rej) => setTimeout(() => rej('timeout'), 2000))
-                ])
-                const lid = res?.[0]?.lid || id
-                lidCache.set(id, lid)
-                setTimeout(() => lidCache.delete(id), 300000)
-                return lid
-            } catch {
-                return id
-            }
-        }
-
-        const senderLid = await getLidFromJid.call(this, m.sender)
-        const botNumber = normalizeJid(botJid)
-        const botLid = await getLidFromJid.call(this, botJid)
+        const senderLid = await resolveJid(m.sender, this, m.chat)
+        const botNumber  = normalizeJid(botJid)
+        const botLid     = await resolveJid(botJid, this, m.chat)
         let groupMetadata = null
         let participants = []
         if (m.isGroup) {
