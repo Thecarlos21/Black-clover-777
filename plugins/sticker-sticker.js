@@ -1,4 +1,4 @@
-import { sticker } from '#lib/sticker.js'
+import { sticker } from '../lib/sticker.js'
 import fs from 'fs'
 import path from 'path'
 import { fileTypeFromBuffer } from 'file-type'
