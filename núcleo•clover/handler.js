@@ -225,14 +225,14 @@ export async function handler(chatUpdate) {
         if (typeof m.text!== "string") m.text = ""
         globalThis.setting = settings
 
-        // ── FIX LID: resolver el JID real ANTES de calcular isOwner ──
-        // NO mutar m.sender (getter de solo lectura en Baileys)
-        // Incluimos el JID resuelto en senderIds para que checkOwner lo compare
+
+
+
         const senderLidEarly = await resolveJid(m.sender, this, m.chat)
 
         const senderIds = [
-            senderLidEarly,      // JID resuelto (@s.whatsapp.net)
-            m.sender,            // original (puede ser @lid)
+            senderLidEarly,
+            m.sender,
             m.key?.participant,
             m.key?.participantAlt,
             m.key?.senderPn,
@@ -298,44 +298,45 @@ export async function handler(chatUpdate) {
         m.exp += Math.ceil(Math.random() * 10)
         let usedPrefix
 
-        // m.sender ya fue resuelto arriba (fix LID early)
+
         const botNumber  = normalizeJid(botJid)
         const botLid     = await resolveJid(botJid, this, m.chat)
         let groupMetadata = null
         let participants = []
         if (m.isGroup) {
-            if (metadataCache.has(m.chat)) {
-                groupMetadata = metadataCache.get(m.chat)
+            const cached = metadataCache.get(m.chat)
+            if (cached?.participants?.length) {
+                groupMetadata = cached
             } else {
                 try {
-                    groupMetadata = (this.chats[m.chat] || {}).metadata || await Promise.race([
+                    groupMetadata = await Promise.race([
                         this.groupMetadata(m.chat),
-                        new Promise((_, rej) => setTimeout(() => rej('timeout'), 3000))
+                        new Promise((_, rej) => setTimeout(() => rej('timeout'), 5000))
                     ])
                 } catch {
                     groupMetadata = null
                 }
-                if (groupMetadata) {
+                if (groupMetadata?.participants?.length) {
                     metadataCache.set(m.chat, groupMetadata)
                     setTimeout(() => metadataCache.delete(m.chat), 60000)
                 }
             }
             participants = groupMetadata?.participants || []
         }
-        // norm: extrae solo dígitos para comparar @lid vs @s.whatsapp.net
+
         const norm = id => String(id || '').split('@')[0].replace(/\D/g, '')
         const senderNum = norm(senderLidEarly || m.sender)
         const botNum    = norm(botJid)
 
         const matchSender = (p) => {
             if (!p) return false
-            if (p.id === senderLidEarly)  return true   // JID resuelto exacto
-            if (p.id === m.sender)        return true   // @lid original
-            if (p.lid === m.sender)       return true   // campo lid del participante
+            if (p.id === senderLidEarly)  return true
+            if (p.id === m.sender)        return true
+            if (p.lid === m.sender)       return true
             if (p.lid === senderLidEarly) return true
-            // phoneNumber existe cuando p.id es @lid en grupos cifrados
+
             if (p.phoneNumber && norm(String(p.phoneNumber)) === senderNum) return true
-            // comparación solo dígitos (cubre @lid cuyo número coincide)
+
             const pn = norm(p.id || p.jid || p.lid)
             if (pn && pn.length >= 7 && (pn === senderNum || senderNum.endsWith(pn) || pn.endsWith(senderNum))) return true
             return false
@@ -358,7 +359,7 @@ export async function handler(chatUpdate) {
             if (participant.id && botParticipant.id) break
         }
 
-        // DEBUG TEMPORAL — quitar después de confirmar que admins funciona
+
         if (m.isGroup) {
             console.log('[ADMIN DEBUG] senderLidEarly:', senderLidEarly)
             console.log('[ADMIN DEBUG] m.sender:', m.sender)
