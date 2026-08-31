@@ -228,8 +228,8 @@ export async function handler(chatUpdate) {
         const senderLidEarly = await resolveJid(m.sender, this, m.chat)
 
         const senderIds = [
-            senderLidEarly,  
-            m.sender,         
+            senderLidEarly,    
+            m.sender,      
             m.key?.participant,
             m.key?.participantAlt,
             m.key?.senderPn,
@@ -321,12 +321,21 @@ export async function handler(chatUpdate) {
         }
         let participant = {}, botParticipant = {}
         for (const p of participants) {
-            const pNum = normalizeJid(p?.id || p?.jid || p?.lid)
-            const pFull = [p?.id, p?.jid, p?.lid].filter(Boolean).join(' ')
-            if (!participant.id && (senderNums.includes(pNum) || senderIds.some(s => pFull.includes(s)) || [p?.id, p?.jid, p?.lid].includes(senderLidEarly) || [p?.id, p?.jid].includes(m.sender))) {
+            const pIds = [p?.id, p?.jid, p?.lid].filter(Boolean)
+            // phoneNumber puede existir cuando p.id es un @lid
+            const pPhone = p?.phoneNumber ? normalizeJid(String(p.phoneNumber)) : null
+            const pNum = pPhone || normalizeJid(p?.id || p?.jid || p?.lid)
+            const pNums = [...new Set([pNum, pPhone].filter(Boolean))]
+            const pFull = [...pIds, pPhone].filter(Boolean).join(' ')
+            const senderMatch =
+                senderNums.some(sn => pNums.some(pn => pn && (sn === pn || sn.includes(pn) || pn.includes(sn)))) ||
+                senderIds.some(s => pFull.includes(s)) ||
+                pIds.includes(senderLidEarly) ||
+                pIds.includes(m.sender)
+            if (!participant.id && senderMatch) {
                 participant = p
             }
-            if (!botParticipant.id && (pNum === botNumber || [p?.id, p?.jid, p?.lid].includes(botLid) || [p?.id, p?.jid].includes(botJid))) {
+            if (!botParticipant.id && (pNums.includes(botNumber) || pIds.includes(botLid) || pIds.includes(botJid))) {
                 botParticipant = p
             }
             if (participant.id && botParticipant.id) break
