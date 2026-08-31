@@ -293,6 +293,7 @@ export async function handler(chatUpdate) {
         let usedPrefix
 
         const senderLid = await resolveJid(m.sender, this, m.chat)
+        m.sender        = senderLid 
         const botNumber  = normalizeJid(botJid)
         const botLid     = await resolveJid(botJid, this, m.chat)
         let groupMetadata = null
