@@ -1,14 +1,6 @@
 let linkRegex = /chat\.whatsapp\.com\/(?:invite\/)?([0-9A-Za-z]{20,24})/gi
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-  // === FIX OWNER LID DEFINITIVO ===
-  const normalize = j => j?.split('@')[0]?.replace(/\D/g,'') || ''
-  const allIds = [m.sender, m.key?.participantAlt, m.key?.senderPn, m.key?.participant, m.key?.remoteJidAlt].filter(Boolean)
-  const ownerNums = (global.owner || []).map(o => normalize(Array.isArray(o)? o[0] : o))
-  const senderNums = allIds.map(j => normalize(j))
-  const isRealOwner = ownerNums.some(n => senderNums.includes(n) || allIds.some(id => String(id).includes(n))) || global.isOwner?.(m.sender) || m.fromMe
-
-  if (!isRealOwner) return global.dfail('rowner', m, conn)
 
   if (!text) return m.reply(`🚩 Ingresa el enlace del grupo.\n\nEjemplo: ${usedPrefix + command} https://chat.whatsapp.com/xxxx`)
 
