@@ -22,8 +22,7 @@ import pino from 'pino'
 import path, { join, dirname } from 'path'
 import { Boom } from '@hapi/boom'
 import { makeWASocket, protoType, serialize } from '../lib/simple.js'
-import { Low, JSONFile } from 'lowdb'
-import store from '../lib/store.js'
+import SQLiteDB from '../lib/database.js'
 const { proto } = (await import('@whiskeysockets/baileys')).default
 import pkg from 'google-libphonenumber'
 const { PhoneNumberUtil } = pkg
@@ -62,7 +61,7 @@ const __dirname = global.__dirname(import.meta.url)
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse())
 global.prefix = new RegExp('^[#/!.]')
 
-global.db = new Low(/https?:\/\//.test(opts['db'] || '')? new JSONFile('./src/database/database.json'))
+global.db = new SQLiteDB('./src/database/database.db')
 
 global.DATABASE = global.db
 global.loadDatabase = async function loadDatabase() {
@@ -70,23 +69,14 @@ global.loadDatabase = async function loadDatabase() {
     return new Promise((resolve) => setInterval(async function () {
       if (!global.db.READ) {
         clearInterval(this)
-        resolve(global.db.data == null? global.loadDatabase() : global.db.data)
+        resolve(global.db.data == null ? global.loadDatabase() : global.db.data)
       }
     }, 1000))
   }
-  if (global.db.data!== null) return
+  if (global.db.data !== null) return
   global.db.READ = true
   await global.db.read().catch(console.error)
   global.db.READ = null
-  global.db.data = {
-    users: {},
-    chats: {},
-    stats: {},
-    msgs: {},
-    sticker: {},
-    settings: {},
-...(global.db.data || {}),
-  }
   global.db.chain = chain(global.db.data)
 }
 loadDatabase()
