@@ -32,12 +32,6 @@
   "bugs": {
     "url": "https://github.com/thecarlos19/black-clover-MD/issues"
   },
-  "imports": {
-  "#lib/*": "./lib/*.js",
-  "#plugins/*": "./plugins/*.js",
-  "#src/*": "./src/*.js",
-  "#nucleo/*": "./núcleo•clover/*.js"
-},
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@whiskeysockets/baileys": "^7.0.0rc1",
