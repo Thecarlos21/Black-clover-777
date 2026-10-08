@@ -1,16 +1,21 @@
+![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+
+<img src="https://readme-typing-svg.herokuapp.com/?font=mono&size=30&duration=4000&color=0000FF&center=falso&vCenter=falso&lines=🜛+𝐁𝐋𝐀𝐂𝐊+𝐂𝐋𝐎𝐕𝐄𝐑+𝐕777+🜛;۞+𝐎𝐅𝐂+𝐔𝐏𝐃𝐀𝐓𝐄+۞;@Thecarlos✞">
+
+![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+
+**No olvides dejar tu estrellita 🌟**
+
+> 👑 **El mejor Bot de WhatsApp**
+
+![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+
+<h1 align="center">Black - Clover</h1>
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com/?font=mono&size=30&duration=4000&color=0000FF&center=true&vCenter=true&lines=🜛+𝐁𝐋𝐀𝐂𝐊+𝐂𝐋𝐎𝐕𝐄𝐑+𝐕777+🜛;۞+𝐎𝐅𝐂+𝐔𝐏𝐃𝐀𝐓𝐄+۞;@Thecarlos21">
+  <img src="https://files.catbox.moe/30f5ik.jpg" width="300" alt="Black Clover">
 </p>
 
-<p align="center">
 
-🜛 BLACK CLOVER V777 🜛
-
-👑 El mejor Bot de WhatsApp
-
-No olvides dejar tu estrellita 🌟
-
-</p>
 
 <p align="center">
   <img src="https://files.catbox.moe/30f5ik.jpg" width="300" alt="Black Clover">
@@ -40,7 +45,7 @@ No olvides dejar tu estrellita 🌟
   <img src="https://img.shields.io/badge/BAILEYS-6.7.9+-00BFFF?style=flat-square">
 </p>
 
-line
+────────
 
 ℹ️ Información importante
 
@@ -50,9 +55,13 @@ line
 <br>
 
 • Black Clover V777 es un bot de WhatsApp desarrollado de forma independiente.
+
 • Este proyecto no está afiliado, patrocinado ni respaldado por WhatsApp LLC.
+
 • WhatsApp es una marca registrada de WhatsApp LLC.
+
 • El proyecto está diseñado para trabajar con Baileys 6.7.9+ y dispositivos multidispositivo.
+
 • El código continúa en desarrollo y puede recibir actualizaciones, correcciones y nuevas funciones.
 
 </details>
@@ -95,7 +104,7 @@ El bot se encuentra en desarrollo constante. Si encuentras un problema, repórta
 
 </details>
 
-line
+────────
 
 🌐 Hosting
 
@@ -107,7 +116,7 @@ line
   </a>
 </p>
 
-line
+────────
 
 📲 Instalar en Termux
 
@@ -123,7 +132,6 @@ termux-setup-storage
 2️⃣ Instalar dependencias
 
 apt update && apt upgrade -y
-
 pkg install -y git nodejs ffmpeg imagemagick yarn
 
 3️⃣ Clonar Black Clover V777
@@ -146,13 +154,13 @@ npm start
 
 </details>
 
-line
+────────
 
 🚀 Instalación rápida
 
 git clone https://github.com/Thecarlos21/Black-clover-777 && cd Black-clover-777 && npm install && npm start
 
-line
+────────
 
 🔄 Activar nuevamente el Bot
 
@@ -162,12 +170,11 @@ line
 <br>
 
 cd ~/Black-clover-777
-
 npm start
 
 </details>
 
-line
+────────
 
 🧿 Obtener otro código QR
 
@@ -177,29 +184,22 @@ line
 <br>
 
 cd ~/Black-clover-777
-
 rm -rf Seccion-activas
-
 npm start
 
 > ⚠️ Esto eliminará la sesión activa y permitirá generar una nueva autenticación.
 
 </details>
 
-line
+────────
 
 🔮 Activar 24/7 en Termux
 
 termux-wake-lock
-
 npm i -g pm2
-
 cd ~/Black-clover-777
-
 pm2 start index.js --name Black-Clover-V777
-
 pm2 save
-
 pm2 logs Black-Clover-V777
 
 Para comprobar el estado:
@@ -210,7 +210,7 @@ Para reiniciar:
 
 pm2 restart Black-Clover-V777
 
-line
+────────
 
 📤 Actualizar Black Clover V777
 
@@ -247,7 +247,7 @@ pm2 restart Black-Clover-V777
 
 </details>
 
-line
+────────
 
 ☁️ Instalar desde Cloud Shell
 
@@ -257,20 +257,16 @@ line
 <br>
 
 apt update && apt upgrade -y
-
 git clone https://github.com/Thecarlos21/Black-clover-777
-
 cd Black-clover-777
-
 npm install
-
 npm start
 
 ✅ Black Clover V777 listo para usarse. 🥷
 
 </details>
 
-line
+────────
 
 🛠️ Tecnologías
 
@@ -283,7 +279,7 @@ line
   <img src="https://img.shields.io/badge/PM2-2B037A?style=for-the-badge&logo=pm2&logoColor=white">
 </p>
 
-line
+────────
 
 🔗 Enlaces Oficiales
 
@@ -296,7 +292,7 @@ line
 |📢 Canal Oficial|https://whatsapp.com/channel/0029VbB36XC8aKvQevh8Bp04|
 |☁️ Hosting      |https://panel2.skyultraplus.com/                     |
 
-line
+────────
 
 👤 Creador
 
@@ -321,7 +317,7 @@ Creador y desarrollador de Black Clover V777
   </a>
 </p>
 
-line
+────────
 
 💬 Soporte
 
@@ -338,7 +334,7 @@ Puedes contactar al creador mediante WhatsApp o Instagram.
   </a>
 </p>
 
-line
+────────
 
 ⭐ Apoya el proyecto
 
@@ -356,11 +352,11 @@ Si Black Clover V777 te sirve, puedes apoyar el proyecto de forma gratuita:
 
 <p align="center">
   <a href="https://github.com/Thecarlos21/Black-clover-777">
-    <img src="https://img.shields.io/github/stars/Thecarlos21/Black-clover-777?style=for-the-badge&label=⭐%20DAR%20ESTRELLA">
+    <img src="https://img.shields.io/badge/⭐%20DAR%20ESTRELLA-000?style=for-the-badge&logo=github">
   </a>
 </p>
 
-line
+────────
 
 ⚠️ Aviso
 
@@ -372,7 +368,7 @@ El usuario es responsable del uso que haga del bot y de cumplir las normas y con
 
 No se garantiza el funcionamiento permanente de servicios externos, APIs o páginas de terceros utilizados por determinadas funciones.
 
-line
+────────
 
 📊 Estadísticas del proyecto
 
@@ -384,7 +380,7 @@ line
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=Thecarlos21&theme=tokyonight&hide_border=true">
 </p>
 
-line
+────────
 
 🧩 Contribuciones
 
@@ -398,7 +394,7 @@ line
 
 Toda contribución útil para mejorar el proyecto será bienvenida.
 
-line
+────────
 
 🖤 Black Clover V777
 
