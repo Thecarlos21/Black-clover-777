@@ -1,252 +1,427 @@
-![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com/?font=mono&size=30&duration=4000&color=0000FF&center=true&vCenter=true&lines=🜛+𝐁𝐋𝐀𝐂𝐊+𝐂𝐋𝐎𝐕𝐄𝐑+𝐕777+🜛;۞+𝐎𝐅𝐂+𝐔𝐏𝐃𝐀𝐓𝐄+۞;@Thecarlos21">
+</p>
 
-<img src="https://readme-typing-svg.herokuapp.com/?font=mono&size=30&duration=4000&color=0000FF&center=falso&vCenter=falso&lines=🜛+𝐁𝐋𝐀𝐂𝐊+𝐂𝐋𝐎𝐕𝐄𝐑+𝐕777+🜛;۞+𝐎𝐅𝐂+𝐔𝐏𝐃𝐀𝐓𝐄+۞;@Thecarlos✞">
+<p align="center">
 
-![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+🜛 BLACK CLOVER V777 🜛
 
-**No olvides dejar tu estrellita 🌟**
+👑 El mejor Bot de WhatsApp
 
-> 👑 **El mejor Bot de WhatsApp**
+No olvides dejar tu estrellita 🌟
 
-![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+</p>
 
-<h1 align="center">Black - Clover</h1>
 <p align="center">
   <img src="https://files.catbox.moe/30f5ik.jpg" width="300" alt="Black Clover">
 </p>
 
 <p align="center">
+  <a href="https://github.com/Thecarlos21/Black-clover-777">
+    <img title="GitHub" src="https://img.shields.io/badge/GITHUB-THECARLOS21-000?style=for-the-badge&logo=github&logoColor=white">
+  </a>
   <a href="https://wa.me/525544876071">
-    <img title="Autor" src="https://img.shields.io/badge/CARLOS_OFC-000?style=for-the-badge&logo=whatsapp&logoColor=25D366">
+    <img title="WhatsApp" src="https://img.shields.io/badge/CARLOS_OFC-000?style=for-the-badge&logo=whatsapp&logoColor=25D366">
   </a>
   <a href="https://instagram.com/_carlitos.zx">
     <img title="Instagram" src="https://img.shields.io/badge/@_carlitos.zx-E4405F?style=for-the-badge&logo=instagram&logoColor=white">
   </a>
   <a href="https://whatsapp.com/channel/0029VbB36XC8aKvQevh8Bp04">
-    <img title="Canal" src="https://img.shields.io/badge/CANAL_OFICIAL-1E90FF?style=for-the-badge&logo=whatsapp&logoColor=white">
+    <img title="Canal Oficial" src="https://img.shields.io/badge/CANAL_OFICIAL-1E90FF?style=for-the-badge&logo=whatsapp&logoColor=white">
   </a>
 </p>
 
 <p align="center">
-<img src="https://img.shields.io/github/stars/thecarlos19/black-clover-MD?label=Stars&style=social">
-<img src="https://img.shields.io/github/forks/thecarlos19/black-clover-MD?label=Forks&style=social">
-<img src="https://img.shields.io/badge/UPDATE-2026-1E90FF?style=flat-square">
-<img src="https://img.shields.io/badge/BAILEYS-6.7.9+-00BFFF?style=flat-square">
+  <img src="https://img.shields.io/github/stars/Thecarlos21/Black-clover-777?label=Stars&style=social">
+  <img src="https://img.shields.io/github/forks/Thecarlos21/Black-clover-777?label=Forks&style=social">
+  <img src="https://img.shields.io/github/commit-activity/y/Thecarlos21/Black-clover-777?label=Actividad&style=social">
+  <img src="https://img.shields.io/github/last-commit/Thecarlos21/Black-clover-777?label=Última%20actualización&style=flat-square">
+  <img src="https://img.shields.io/badge/V777-2026-1E90FF?style=flat-square">
+  <img src="https://img.shields.io/badge/BAILEYS-6.7.9+-00BFFF?style=flat-square">
 </p>
 
-![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+line
 
 ℹ️ Información importante
 
 <details>
-<summary><b>📘 ✞ Info Bot </b></summary>
+<summary><b>📘 ✞ Información del Bot</b></summary>
 
-* Este proyecto **no está afiliado de ninguna manera** con `WhatsApp`. `WhatsApp` es una marca registrada de `WhatsApp LLC`, y este bot es un **desarrollo independiente** que **no tiene ninguna relación oficial con la compañía**.
-* **Versión 2026**: Adaptado para Baileys 6.7.9+, multi-device y nuevas políticas de WhatsApp.
-</details>
+<br>
 
-<details>
-<summary><b>⚙️ ✞ Funciones </b></summary>
-
-> El bot está en desarrollo constante. Reporta fallas al creador para fix rápido.
-
-- [x] Interacción con voz y texto + IA local
-- [x] Configuración de grupo avanzada
-- [x] Antidelete, antilink, antispam, antifakes, anti árabes
-- [x] Bienvenida personalizada con imagen/gif
-- [x] Juegos: tictactoe, matemáticas, ahorcado, trivia 2026
-- [x] Chatbot SimSimi + Auto-responder IA
-- [x] Crear sticker de imagen/video/gif/URL + stickerly
-- [x] SubBot / Serbot con código QR
-- [x] Buscador Google, YouTube, TikTok, Pinterest
-- [x] Juego RPG + Economía + Top global
-- [x] Personalizar imagen del menú + textos
-- [x] Descarga de música y video: YouTube, Spotify, SoundCloud
-- [x] **NUEVO** Filtro anti view once automático
-- [x] **NUEVO** Descarga de estados WhatsApp
-- [x] **NUEVO** Comandos solo premium
-- [x] **NUEVO** Modo IA: ChatGPT, Gemini, Claude
-- [x] **NUEVO** Generador de imágenes IA
-- [x] **NUEVO** Traductor automático en grupos
-- [ ] Más funciones en beta
+• Black Clover V777 es un bot de WhatsApp desarrollado de forma independiente.
+• Este proyecto no está afiliado, patrocinado ni respaldado por WhatsApp LLC.
+• WhatsApp es una marca registrada de WhatsApp LLC.
+• El proyecto está diseñado para trabajar con Baileys 6.7.9+ y dispositivos multidispositivo.
+• El código continúa en desarrollo y puede recibir actualizaciones, correcciones y nuevas funciones.
 
 </details>
 
-![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+<details>
+<summary><b>⚙️ ✞ Funciones</b></summary>
 
-🌐 **¡PUEDES INSTALAR EL BOT EN ALGÚN [HOSTING](https://panel2.skyultraplus.com/)!**
+<br>
 
-![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+El bot se encuentra en desarrollo constante. Si encuentras un problema, repórtalo para poder corregirlo.
 
-### 📲 Click en la imagen para obtener Termux
-<a href="https://www.mediafire.com/file/3hsvi3xkpq3a64o/termux_118.a">
-  <img src="https://cloud.stellarwa.xyz/tlnwgaBd.jpeg" height="125px">
-</a>
+☑ 🤖 IA y conversación automática
+☑ 🎙️ Interacción mediante voz y texto
+☑ ⚙️ Configuración avanzada de grupos
+☑ 🛡️ Antidelete
+☑ 🔗 Antilink
+☑ 🚫 Antispam
+☑ 🛡️ Antifakes
+☑ 👋 Sistema de bienvenida
+☑ 🎮 Juegos interactivos
+☑ 🧠 Chatbot y Auto-responder
+☑ 🖼️ Stickers desde imagen, vídeo, GIF y URL
+☑ 🤖 SubBot / SerBot
+☑ 🔎 Buscadores
+☑ 🎵 Descarga de música
+☑ 🎬 Descarga de vídeos
+☑ 🎮 Sistema RPG
+☑ 💰 Economía
+☑ 🏆 Rankings globales
+☑ 🎨 Menús personalizables
+☑ 👁️ Filtro automático para View Once
+☑ 📱 Descarga de estados
+☑ 👑 Comandos Premium
+☑ 🧠 Integración con diferentes modelos de IA
+☑ 🎨 Generación de imágenes mediante IA
+☑ 🌐 Traducción automática
+☑ 🔥 Sistema de plugins
+☑ 🔄 Sistema de actualización
+☐ 🚧 Nuevas funciones en desarrollo
 
-![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+</details>
 
-### 💻 Instalar por Termux
+line
+
+🌐 Hosting
+
+¿Quieres ejecutar Black Clover V777 en un servidor?
+
+<p align="center">
+  <a href="https://panel2.skyultraplus.com/">
+    <img src="https://img.shields.io/badge/☁️%20INSTALAR%20EN%20HOSTING-1E90FF?style=for-the-badge">
+  </a>
+</p>
+
+line
+
+📲 Instalar en Termux
 
 <details>
-<summary><b>📲  Ver comandos para Termux</b></summary>
+<summary><b>📱 Ver comandos de instalación</b></summary>
 
-## 🚀 Instalación Rápida
+<br>
 
-```bash
+1️⃣ Preparar almacenamiento
+
 termux-setup-storage
-```
-```bash
-apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
-```
-```bash
-git clone https://github.com/thecarlos19/black-clover-MD 
 
-```
-```bash
-cd black-clover-MD 
-```
-```bash
+2️⃣ Instalar dependencias
+
+apt update && apt upgrade -y
+
+pkg install -y git nodejs ffmpeg imagemagick yarn
+
+3️⃣ Clonar Black Clover V777
+
+git clone https://github.com/Thecarlos21/Black-clover-777
+
+4️⃣ Entrar al proyecto
+
+cd Black-clover-777
+
+5️⃣ Instalar dependencias
+
 npm install
-```
 
-```bash
+6️⃣ Iniciar el bot
+
 npm start
-```
 
-> *Si aparece **(Y/I/N/O/D/Z) [default=N] ?** use la letra **"y"** y luego **"ENTER"** para continuar con la instalación del mejor bot.*
+> Si aparece `(Y/I/N/O/D/Z) [default=N] ?`, escribe `y` y presiona **ENTER**.
+
 </details>
 
+line
+
+🚀 Instalación rápida
+
+git clone https://github.com/Thecarlos21/Black-clover-777 && cd Black-clover-777 && npm install && npm start
+
+line
+
+🔄 Activar nuevamente el Bot
+
 <details>
-<summary><b>💻 ACTIVAR EN TERMUX EN CASO DE DETENERSE</b></summary>
+<summary><b>💻 Si el bot se detuvo</b></summary>
 
-```bash
-cd 
-```
+<br>
 
-```bash
-cd black-clover-MD
-```
+cd ~/Black-clover-777
 
-```bash
 npm start
-```
 
-🧿 **`OBTENER OTRO CODIGO QR`**
+</details>
 
->ESCRIBE LOS SIGUIENTES COMANDOS UNO POR UNO
+line
 
-```bash
-cd black-clover-MD
-```
+🧿 Obtener otro código QR
 
-```bash
+<details>
+<summary><b>🔐 Generar una nueva sesión</b></summary>
+
+<br>
+
+cd ~/Black-clover-777
+
 rm -rf Seccion-activas
-```
-```bash
+
 npm start
-```
 
-🔮 **`ACTIVAR 24/7 EN  TERMUX`**
-```bash
-termux-wake-lock && npm i -g pm2 && pm2 start index.js && pm2 save && pm2 logs 
-```
+> ⚠️ Esto eliminará la sesión activa y permitirá generar una nueva autenticación.
 
-📤 **`ACTUALIZAR BLACK CLOVER`**
-> Comandos para actualizar BLACK CLOVER de forma automática en termux 
-
-```bash
-grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https://raw.githubusercontent.com/thecarlos19/black-clover-MD'/master/termux.sh | bash
-```
-Para que no pierda su progreso, estos comandos realizarán un respaldo de su `database.json` y se agregará a la versión más reciente.
-
-> Warning Estos comandos solo funcionan para TERMUX, REPLIT, LINUX
 </details>
 
-![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+line
 
-### ☁️ Instalar desde Cloud Shell
+🔮 Activar 24/7 en Termux
+
+termux-wake-lock
+
+npm i -g pm2
+
+cd ~/Black-clover-777
+
+pm2 start index.js --name Black-Clover-V777
+
+pm2 save
+
+pm2 logs Black-Clover-V777
+
+Para comprobar el estado:
+
+pm2 status
+
+Para reiniciar:
+
+pm2 restart Black-Clover-V777
+
+line
+
+📤 Actualizar Black Clover V777
 
 <details>
-<summary><b>🌀  Ver comandos para Cloud Shell</b></summary>
+<summary><b>🔄 Actualizar automáticamente</b></summary>
 
-```bash
-apt update && apt upgrade
-```
+<br>
 
-```bash
-git clone https://github.com/thecarlos19/black-clover-MD && cd black-clover-MD
-```
+Primero entra al proyecto:
 
-```bash
-yarn install && npm install
-```
+cd ~/Black-clover-777
 
-```bash
+Guarda tus cambios locales si tienes alguno:
+
+git stash
+
+Actualiza el repositorio:
+
+git pull origin main
+
+Instala las dependencias:
+
+npm install
+
+Inicia nuevamente:
+
 npm start
-```
 
-✅ ¡Bot listo para usarse! El mejor bot de WhatsApp 🥷
+Si utilizas PM2:
+
+pm2 restart Black-Clover-V777
+
+> ⚠️ Se recomienda realizar una copia de seguridad de tu base de datos y sesiones antes de actualizar.
+
 </details>
 
+line
 
-![line](https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif)
+☁️ Instalar desde Cloud Shell
 
-## 🔗 Enlaces Oficiales 
+<details>
+<summary><b>🌀 Ver comandos</b></summary>
 
-| APP | TIPO | ENLACE |
-|------|----------------------|--------|
-| 📱 WhatsApp Canal Oficial | Noticias y actualizaciones 2026 | [¡Unirse!](https://whatsapp.com/channel/0029VbB36XC8aKvQevh8Bp04) |
-| 👥 Grupo de Soporte | Comunidad y ayuda 24/7 | [¡Entrar!](https://chat.whatsapp.com/HBJ8BniXgtNHfiLQFKwrcV?mode=wwt) |
-| 🎥 YouTube | Tutoriales y novedades | [¡Suscribirse!](https://youtube.com/@thecarlos19) |
+<br>
+
+apt update && apt upgrade -y
+
+git clone https://github.com/Thecarlos21/Black-clover-777
+
+cd Black-clover-777
+
+npm install
+
+npm start
+
+✅ Black Clover V777 listo para usarse. 🥷
+
+</details>
+
+line
+
+🛠️ Tecnologías
 
 <p align="center">
-  <img src="https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif" width="100%">
+  <img src="https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=node.js&logoColor=white">
+  <img src="https://img.shields.io/badge/Baileys-6.7.9+-00BFFF?style=for-the-badge">
+  <img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+  <img src="https://img.shields.io/badge/Termux-000000?style=for-the-badge&logo=termux&logoColor=white">
+  <img src="https://img.shields.io/badge/PM2-2B037A?style=for-the-badge&logo=pm2&logoColor=white">
 </p>
 
-# 👤 Creador del Proyecto
+line
+
+🔗 Enlaces Oficiales
+
+|🌐 Tipo         |🔗 Enlace                                             |
+|---------------|-----------------------------------------------------|
+|💻 GitHub       |https://github.com/Thecarlos21                       |
+|📦 Repositorio  |https://github.com/Thecarlos21/Black-clover-777      |
+|💬 WhatsApp     |https://wa.me/525544876071                           |
+|📸 Instagram    |https://instagram.com/_carlitos.zx                   |
+|📢 Canal Oficial|https://whatsapp.com/channel/0029VbB36XC8aKvQevh8Bp04|
+|☁️ Hosting      |https://panel2.skyultraplus.com/                     |
+
+line
+
+👤 Creador
 
 <p align="center">
-  <a href="https://github.com/thecarlos19">
-    <img src="https://github.com/thecarlos19.png" width="250" height="250" alt="thecarlos19"/>
+  <img src="https://files.catbox.moe/30f5ik.jpg" width="180">
+</p>
+
+<p align="center">
+
+🜛 THECARLOS21 🜛
+
+Creador y desarrollador de Black Clover V777
+
+</p>
+
+<p align="center">
+  <a href="https://github.com/Thecarlos21">
+    <img src="https://img.shields.io/badge/GitHub-THECARLOS21-000?style=for-the-badge&logo=github">
+  </a>
+  <a href="https://instagram.com/_carlitos.zx">
+    <img src="https://img.shields.io/badge/Instagram-@_carlitos.zx-E4405F?style=for-the-badge&logo=instagram&logoColor=white">
+  </a>
+</p>
+
+line
+
+💬 Soporte
+
+¿Encontraste un error o tienes alguna sugerencia?
+
+Puedes contactar al creador mediante WhatsApp o Instagram.
+
+<p align="center">
+  <a href="https://wa.me/525544876071">
+    <img src="https://img.shields.io/badge/💬%20CONTACTAR%20POR%20WHATSAPP-25D366?style=for-the-badge&logo=whatsapp&logoColor=white">
+  </a>
+  <a href="https://instagram.com/_carlitos.zx">
+    <img src="https://img.shields.io/badge/📸%20INSTAGRAM-E4405F?style=for-the-badge&logo=instagram&logoColor=white">
+  </a>
+</p>
+
+line
+
+⭐ Apoya el proyecto
+
+Si Black Clover V777 te sirve, puedes apoyar el proyecto de forma gratuita:
+
+⭐ Dale una estrella al repositorio.
+
+🍴 Haz un fork.
+
+📢 Comparte el proyecto.
+
+🐛 Reporta errores.
+
+💡 Envía sugerencias.
+
+<p align="center">
+  <a href="https://github.com/Thecarlos21/Black-clover-777">
+    <img src="https://img.shields.io/github/stars/Thecarlos21/Black-clover-777?style=for-the-badge&label=⭐%20DAR%20ESTRELLA">
+  </a>
+</p>
+
+line
+
+⚠️ Aviso
+
+Black Clover V777 es un proyecto independiente desarrollado con fines educativos y de entretenimiento.
+
+El proyecto no está afiliado, patrocinado ni respaldado por WhatsApp LLC.
+
+El usuario es responsable del uso que haga del bot y de cumplir las normas y condiciones aplicables de WhatsApp.
+
+No se garantiza el funcionamiento permanente de servicios externos, APIs o páginas de terceros utilizados por determinadas funciones.
+
+line
+
+📊 Estadísticas del proyecto
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=Thecarlos21&show_icons=true&theme=tokyonight&hide_border=true">
+</p>
+
+<p align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=Thecarlos21&theme=tokyonight&hide_border=true">
+</p>
+
+line
+
+🧩 Contribuciones
+
+¿Quieres mejorar Black Clover V777?
+
+1. Haz un fork del repositorio.
+2. Crea una nueva rama.
+3. Realiza tus cambios.
+4. Prueba las funciones modificadas.
+5. Envía un Pull Request.
+
+Toda contribución útil para mejorar el proyecto será bienvenida.
+
+line
+
+🖤 Black Clover V777
+
+<p align="center">
+
+🜛 𝐁𝐋𝐀𝐂𝐊 𝐂𝐋𝐎𝐕𝐄𝐑 𝐕777 🜛
+
+۞ OFC UPDATE ۞
+
+@Thecarlos21
+
+</p>
+
+<p align="center">
+  <a href="https://github.com/Thecarlos21/Black-clover-777">
+    <img src="https://img.shields.io/badge/⭐%20STAR%20THE%20REPO-000?style=for-the-badge&logo=github">
   </a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/DEV-Carlos_OFC-1E90FF?style=for-the-badge&logo=github&logoColor=white">
-  <img src="https://img.shields.io/badge/UPDATE-2026-00BFFF?style=for-the-badge">
-  <img src="https://img.shields.io/badge/STATUS-ACTIVE-00FF7F?style=for-the-badge">
+
+⚡ Powered by The Legends 2026 ⚡
+
+🜛 THECARLOS21 🜛
+
 </p>
-
-<p align="center">
-  <img src="https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif" width="100%">
-</p>
-
-## 🌐 Mis redes 
-
-<p align="center">
-  <a href="https://instagram.com/_carlitos.zx" target="_blank">
-    <img src="https://img.shields.io/badge/Instagram-%40_carlitos.zx-E4405F?style=for-the-badge&logo=instagram&logoColor=white">
-  </a>
-
-  <a href="https://www.tiktok.com/@_carlitos.zx" target="_blank">
-    <img src="https://img.shields.io/badge/TikTok-%40_thecarlos.ok-000000?style=for-the-badge&logo=tiktok&logoColor=white">
-  </a>
-
-  <a href="https://youtube.com/@thecarlos19" target="_blank">
-    <img src="https://img.shields.io/badge/YouTube-TheCarlos19-FF0000?style=for-the-badge&logo=youtube&logoColor=white">
-  </a>
-
-  <a href="https://wa.me/525544876071" target="_blank">
-    <img src="https://img.shields.io/badge/WhatsApp-Contacto-25D366?style=for-the-badge&logo=whatsapp&logoColor=white">
-  </a>
-</p>
-
-<p align="center">
-  <img src="https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif" width="100%">
-</p>
-
-<p align="center">
-  🔋 <b>Powered by <a href="https://whatsapp.com/channel/0029VbB36XC8aKvQevh8Bp04">The Legends 2026 ⚡</a></b>
-</p>
-
-<img src="https://readme-typing-svg.herokuapp.com/?font=mono&size=30&duration=4000&color=0000FF&center=falso&vCenter=falso&lines=✞+𝐁𝐋𝐀𝐂𝐊+𝐂𝐋𝐎𝐕𝐄𝐑+𝐒𝐘𝐒𝐓𝐄𝐌+֎">
