@@ -1,44 +1,108 @@
-import fetch from 'node-fetch'
+import { igdl } from 'ruhend-scraper'
 
-let handler = async (m, { conn, args }) => {
-  if (!args[0]) return conn.reply(m.chat, '🚩 Ingresa un link de Instagram', m)
+const handler = async (m, { args, conn }) => {
+    const url = args[0]?.trim()
 
-  try {
-    await conn.sendMessage(m.chat, { react: { text: '🕒', key: m.key } })
+    if (!url) {
+        return conn.reply(
+            m.chat,
+            `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯†ִㅤ⃞ׄ†⃞ㅤִ†֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *ɪɴsᴛᴀɢʀᴀᴍ* ! ୧ ֹ ִ
 
-    let url = args[0]
-    let apiUrl = `https://api.evogb.org/dl/instagram?url=${encodeURIComponent(url)}&key=evogb-72KVdRHK`
-    let res = await fetch(apiUrl).then(r => r.json())
+† Ingresa un enlace de Instagram.
 
-    let mediaUrl = res?.data?.find(x => x.type === 'video')?.url
-
-    if (!mediaUrl) throw new Error('No se pudo obtener el video')
-
-    let response = await fetch(mediaUrl)
-
-    if (!response.ok) {
-      throw new Error(`Error al descargar el video: ${response.status}`)
+> 〄 Ejemplo: *.ig https://www.instagram.com/reel/...*`,
+            m
+        )
     }
 
-    let buff = Buffer.from(await response.arrayBuffer())
+    if (!/^(https?:\/\/)?(www\.)?instagram\.com\//i.test(url)) {
+        return conn.reply(
+            m.chat,
+            `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯†ִㅤ⃞ׄ†⃞ㅤִ†֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *ᴇɴʟᴀᴄᴇ ɪɴᴠᴀ́ʟɪᴅᴏ* ! ୧ ֹ ִ
 
-    await conn.sendMessage(m.chat, {
-      video: buff,
-      caption: `🚩 *Instagram - Black Clover Bot*\n*Link:* ${url}`,
-      mimetype: 'video/mp4'
-    }, { quoted: m })
+† El enlace no parece ser de Instagram.`,
+            m
+        )
+    }
 
-    await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } })
+    try {
+        await m.react('🕦')
 
-  } catch (e) {
-    console.log(e)
-    await conn.sendMessage(m.chat, { react: { text: '❌', key: m.key } })
-    await conn.reply(m.chat, `🚩 Error: ${e.message}`, m)
-  }
+        const res = await igdl(url)
+        const results = Array.isArray(res?.data) ? res.data : []
+
+        if (!results.length) {
+            await m.react('❌')
+            return conn.reply(
+                m.chat,
+                `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯†ִㅤ⃞ׄ†⃞ㅤִ†֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *sɪɴ ʀᴇsᴜʟᴛᴀᴅᴏs* ! ୧ ֹ ִ
+
+† No se encontraron medios para este enlace.`,
+                m
+            )
+        }
+
+        const media = results
+            .filter(x => x?.url)
+            .sort((a, b) => {
+                const resA = parseInt(a?.resolution) || 0
+                const resB = parseInt(b?.resolution) || 0
+                return resB - resA
+            })[0]
+
+        if (!media?.url) {
+            await m.react('❌')
+            return conn.reply(
+                m.chat,
+                `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯†ִㅤ⃞ׄ†⃞ㅤִ†֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *ᴠɪᴅᴇᴏ ɴᴏ ᴅɪsᴘᴏɴɪʙʟᴇ* ! ୧ ֹ ִ
+
+† No se encontró un video compatible.`,
+                m
+            )
+        }
+
+        await conn.sendMessage(
+            m.chat,
+            {
+                video: { url: media.url },
+                fileName: 'instagram.mp4',
+                mimetype: 'video/mp4',
+                caption: `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯†ִㅤ⃞ׄ†⃞ㅤִ†֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *ɪɴsᴛᴀɢʀᴀᴍ* ! ୧ ֹ ִ
+
+> † *ᴄᴀʟɪᴅᴀᴅ* › ${media.resolution || 'Auto'}
+> † *ғᴏʀᴍᴀᴛᴏ* › MP4
+> † *ᴇsᴛᴀᴅᴏ* › Completado
+
+> 〄 *Video listo para disfrutar ♡*`
+            },
+            { quoted: m }
+        )
+
+        await m.react('☑️')
+
+    } catch (error) {
+        console.error(error)
+        await m.react('❌')
+
+        return conn.reply(
+            m.chat,
+            `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯†ִㅤ⃞ׄ†⃞ㅤִ†֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *ᴇʀʀᴏʀ* ! ୧ ֹ ִ
+
+> † ${error?.message || 'No se pudo descargar el video.'}`,
+            m
+        )
+    }
 }
 
-handler.command = ['ig', 'instagram', 'reel']
+handler.command = ['instagram', 'ig']
 handler.tags = ['descargas']
-handler.help = ['ig <link>']
+handler.help = ['instagram <url>', 'ig <url>']
+handler.register = true
 
 export default handler

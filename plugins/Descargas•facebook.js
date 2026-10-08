@@ -1,70 +1,104 @@
-import fetch from 'node-fetch'
+import { igdl } from 'ruhend-scraper'
 
-let handler = async (m, { conn, args }) => {
-  if (!args[0]) return conn.reply(m.chat, '🚩 Ingresa un link de Facebook', m)
+const handler = async (m, { conn, args }) => {
+    const url = args[0]?.trim()
 
-  try {
-    await conn.sendMessage(m.chat, {
-      react: { text: '🕒', key: m.key }
-    })
+    if (!url) {
+        return conn.reply(
+            m.chat,
+            `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯✿ִㅤ⃞ׄ𑁍⃞ㅤִ❀֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *ғᴀᴄᴇʙᴏᴏᴋ* ! ୧ ֹ ִ
 
-    let url = args[0]
+✐ Ingresa un enlace de Facebook.
 
-    let apiUrl = `https://api.evogb.org/dl/facebook?url=${encodeURIComponent(url)}&key=evogb-72KVdRHK`
-
-    let response = await fetch(apiUrl)
-
-    if (!response.ok) {
-      throw new Error(`API respondió con ${response.status}`)
+> 〄 Ejemplo: *.fb https://www.facebook.com/...*`,
+            m
+        )
     }
 
-    let res = await response.json()
+    if (!/^(https?:\/\/)?(www\.)?(facebook\.com|fb\.watch)\//i.test(url)) {
+        return conn.reply(
+            m.chat,
+            `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯✿ִㅤ⃞ׄ𑁍⃞ㅤִ❀֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *ᴇɴʟᴀᴄᴇ ɪɴᴠᴀ́ʟɪᴅᴏ* ! ୧ ֹ ִ
 
-    if (!res.status || !Array.isArray(res.resultados)) {
-      throw new Error('La API no devolvió resultados')
+✐ El enlace no parece ser de Facebook.`,
+            m
+        )
     }
 
-    let media =
-      res.resultados.find(x => x.quality === '1080p') ||
-      res.resultados.find(x => x.quality === '720p (HD)') ||
-      res.resultados.find(x => x.quality === '640p') ||
-      res.resultados.find(x => x.quality === '360p (SD)')
+    try {
+        await m.react('🕦')
 
-    if (!media?.url || media.url === '/') {
-      throw new Error('No se encontró un video válido')
+        const res = await igdl(url)
+        const results = Array.isArray(res?.data) ? res.data : []
+
+        if (!results.length) {
+            await m.react('❌')
+            return conn.reply(
+                m.chat,
+                `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯✿ִㅤ⃞ׄ𑁍⃞ㅤִ❀֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *sɪɴ ʀᴇsᴜʟᴛᴀᴅᴏs* ! ୧ ֹ ִ
+
+✐ No se encontró ningún video.`,
+                m
+            )
+        }
+
+        const data =
+            results.find(x => /720p/i.test(x?.resolution || '')) ||
+            results.find(x => /360p/i.test(x?.resolution || '')) ||
+            results.find(x => x?.url)
+
+        if (!data?.url) {
+            await m.react('❌')
+            return conn.reply(
+                m.chat,
+                `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯✿ִㅤ⃞ׄ𑁍⃞ㅤִ❀֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *ᴠɪᴅᴇᴏ ɴᴏ ᴅɪsᴘᴏɴɪʙʟᴇ* ! ୧ ֹ ִ
+
+✐ No se encontró una resolución compatible.`,
+                m
+            )
+        }
+
+        await conn.sendMessage(
+            m.chat,
+            {
+                video: { url: data.url },
+                fileName: 'facebook.mp4',
+                mimetype: 'video/mp4',
+                caption: `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯✿ִㅤ⃞ׄ𑁍⃞ㅤִ❀֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *ғᴀᴄᴇʙᴏᴏᴋ* ! ୧ ֹ ִ
+
+> 〄 Calidad: *${data.resolution || 'Auto'}*
+> 〄 Formato: *MP4*
+
+✐ *Descarga completada ♡*`
+            },
+            { quoted: m }
+        )
+
+        await m.react('☑️')
+
+    } catch (error) {
+        await m.react('❌')
+
+        return conn.reply(
+            m.chat,
+            `࿆ㅤ໋︵ּㅤׄ⏜ּㅤ֯✿ִㅤ⃞ׄ𑁍⃞ㅤִ❀֯ㅤּ⏜ׄㅤּ︵࿆
+𐚁 ֹ ִ *ᴇʀʀᴏʀ* ! ୧ ֹ ִ
+
+> 〄 ${error?.message || 'No se pudo descargar el video.'}`,
+            m
+        )
     }
-
-    let videoResponse = await fetch(media.url)
-
-    if (!videoResponse.ok) {
-      throw new Error(`Error al descargar el video: ${videoResponse.status}`)
-    }
-
-    let buff = Buffer.from(await videoResponse.arrayBuffer())
-
-    await conn.sendMessage(m.chat, {
-      video: buff,
-      caption: `🚩 *Facebook - Black Clover Bot*\n\n📹 *Calidad:* ${media.quality}\n🔗 *Link:* ${url}`,
-      mimetype: 'video/mp4'
-    }, { quoted: m })
-
-    await conn.sendMessage(m.chat, {
-      react: { text: '✅', key: m.key }
-    })
-
-  } catch (e) {
-    console.log('Facebook Downloader:', e)
-
-    await conn.sendMessage(m.chat, {
-      react: { text: '❌', key: m.key }
-    })
-
-    await conn.reply(m.chat, `🚩 Error: ${e.message}`, m)
-  }
 }
 
-handler.command = ['fb', 'facebook']
+handler.help = ['facebook <url>', 'fb <url>']
 handler.tags = ['descargas']
-handler.help = ['fb <link>']
+handler.command = ['facebook', 'fb']
+handler.cookies = 1
+handler.register = true
 
 export default handler

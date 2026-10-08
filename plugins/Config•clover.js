@@ -1,118 +1,386 @@
-import pkg from '@whiskeysockets/baileys'
 import fs from 'fs'
 import fetch from 'node-fetch'
 import axios from 'axios'
 import moment from 'moment-timezone'
-const { generateWAMessageFromContent, prepareWAMessageMedia, proto } = pkg
 
-var handler = m => m
-handler.all = async function (m) {
+const TIMEZONE = 'America/Mexico_City'
+const DATABASE_PATH = './src/database/db.json'
 
-  const pickRandom = list => list[Math.floor(Math.random() * list.length)]
-  const getRandomChannel = async () => {
-    let i = Math.floor(Math.random() * canalIdM.length)
-    return { id: canalIdM[i], name: canalNombreM[i] }
+const CHANNELS = [
+  {
+    id: '120363419782804545@newsletter',
+    name: '⏤͟͞㋡ 𝐓𝐇𝐄 𝐋𝐄𝐆𝐄𝐍𝐃𝐒 '
+  },
+  {
+    id: '120363419782804545@newsletter',
+    name: '㋡ 𝐓𝐇𝐄 𝐋𝐄𝐆𝐄𝐍𝐃𝐒 '
+  }
+]
+
+const SOCIAL_LINKS = [
+  'https://whatsapp.com/channel/0029VbB36XC8aKvQevh8Bp04',
+  'https://github.com/thecarlos19',
+  'https://github.com/thecarlos19/black-clover-MD',
+  'carloscristobal30@gmail.com'
+]
+
+const EMOJIS = ['🥷', '👻', '⚔️', '🍭']
+
+const ICON_URLS = [
+  'https://raw.githubusercontent.com/JTxs00/uploads/main/1776302012214.jpeg'
+]
+
+const pickRandom = list => {
+  if (!Array.isArray(list) || !list.length) return null
+  return list[Math.floor(Math.random() * list.length)]
+}
+
+const getRandomChannel = () => {
+  return pickRandom(CHANNELS) || CHANNELS[0]
+}
+
+const formatRuntime = seconds => {
+  let value = Number(seconds)
+
+  if (!Number.isFinite(value) || value < 0) {
+    value = 0
   }
 
-  global.getBuffer = async (url, options = {}) => {
-    try {
-      const res = await axios({ method: "get", url, headers: { 'DNT': 1, 'User-Agent': 'GoogleBot', 'Upgrade-Insecure-Request': 1 },...options, responseType: 'arraybuffer' })
-      return res.data
-    } catch { return null }
+  value = Math.floor(value)
+
+  const days = Math.floor(value / 86400)
+  const hours = Math.floor((value % 86400) / 3600)
+  const minutes = Math.floor((value % 3600) / 60)
+  const secs = value % 60
+
+  const result = []
+
+  if (days) {
+    result.push(`${days} ${days === 1 ? 'día' : 'días'}`)
   }
 
-  global.getJson = async (url, options = {}) => {
-    try {
-      const res = await axios({ method: 'GET', url, headers: { 'User-Agent': 'Mozilla/5.0' },...options })
-      return res.data
-    } catch { return null }
+  if (hours) {
+    result.push(`${hours} ${hours === 1 ? 'hora' : 'horas'}`)
   }
 
-  global.ucapan = () => {
-    const h = parseInt(moment.tz('America/Mexico_City').format('HH'))
-    if (h >= 18) return "Buenas Noches 🌙"
-    if (h >= 15) return "Buenas Tardes 🌅"
-    if (h > 10) return "Buenos Días ☀️"
-    if (h >= 4) return "Buena Madrugada 🌄"
-    return "Buenas Noches 🌙"
+  if (minutes) {
+    result.push(`${minutes} ${minutes === 1 ? 'minuto' : 'minutos'}`)
   }
 
-  global.runtime = (seconds) => {
-    seconds = Number(seconds)
-    let d = Math.floor(seconds / 86400)
-    let h = Math.floor(seconds % 86400 / 3600)
-    let m = Math.floor(seconds % 3600 / 60)
-    let s = Math.floor(seconds % 60)
-    let dDisplay = d? `${d} ${d == 1? "día, " : "días, "}` : ""
-    let hDisplay = h? `${h} ${h == 1? "hora, " : "horas, "}` : ""
-    let mDisplay = m? `${m} ${m == 1? "minuto, " : "minutos, "}` : ""
-    let sDisplay = s? `${s} ${s == 1? "segundo" : "segundos"}` : ""
-    return dDisplay + hDisplay + mDisplay + sDisplay
+  if (secs || !result.length) {
+    result.push(`${secs} ${secs === 1 ? 'segundo' : 'segundos'}`)
   }
 
-  global.creador = 'Wa.me/525544876071'
-  global.ofcbot = `${conn?.user?.jid?.split('@')[0] || ''}`
-  global.asistencia = 'Wa.me/525544876071'
-  global.namechannel = '⏤͟͞㋡ 𝐓𝐇𝐄 𝐋𝐄𝐆𝐄𝐍𝐃𝐒 '
-  global.namegrupo = ' 𝕭𝖑𝖆𝖈𝖐 𝕮𝖑𝖔𝖛𝖊𝖗 ☘︎'
-  global.namecomu = '𝗖𝗼𝗺𝘂𝗻𝗶𝗱𝗮𝗱 ⏤͟͞ 𝐓𝐇𝐄 𝐋𝐄𝐆𝐄𝐍𝐃𝐒 '
-  global.listo = '⚔️ *Aquí tienes perra*'
+  return result.join(', ')
+}
 
-  global.canalIdM = ["120363419782804545@newsletter", "120363419782804545@newsletter"]
-  global.canalNombreM = ["⏤͟͞㋡ 𝐓𝐇𝐄 𝐋𝐄𝐆𝐄𝐍𝐃𝐒 ", "㋡ 𝐓𝐇𝐄 𝐋𝐄𝐆𝐄𝐍𝐃𝐒 "]
-  global.idchannel = canalIdM[0]
-  global.channelRD = await getRandomChannel()
+const getGreeting = () => {
+  const hour = Number(
+    moment.tz(TIMEZONE).format('HH')
+  )
 
-  global.d = moment.tz('America/Mexico_City').toDate()
-  global.locale = 'es'
-  global.dia = global.d.toLocaleDateString(global.locale, { weekday: 'long' })
-  global.fecha = global.d.toLocaleDateString('es', { day: 'numeric', month: 'numeric', year: 'numeric' })
-  global.mes = global.d.toLocaleDateString('es', { month: 'long' })
-  global.año = global.d.toLocaleDateString('es', { year: 'numeric' })
-  global.tiempo = global.d.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })
+  if (hour >= 4 && hour < 11) {
+    return 'Buena Madrugada 🌄'
+  }
 
-  global.rwait = '⏳'
-  global.done = '✅'
-  global.error = '✖️'
-  global.emoji = '🥷'
-  global.emoji2 = '👻'
-  global.emoji3 = '⚔️'
-  global.emoji4 = '🍭'
-  global.emojis = pickRandom([global.emoji, global.emoji2, global.emoji3, global.emoji4])
+  if (hour >= 11 && hour < 15) {
+    return 'Buenos Días ☀️'
+  }
 
-  var canal = 'https://whatsapp.com/channel/0029VbB36XC8aKvQevh8Bp04'
-  let canal2 = 'https://whatsapp.com/channel/0029VbB36XC8aKvQevh8Bp04'
-  var git = 'https://github.com/thecarlos19'
-  var youtube = ''
-  var github = 'https://github.com/thecarlos19/black-clover-MD'
-  let correo = 'carloscristobal30@gmail.com'
-  global.redes = pickRandom([canal, git, github, correo])
+  if (hour >= 15 && hour < 18) {
+    return 'Buenas Tardes 🌅'
+  }
 
+  return 'Buenas Noches 🌙'
+}
+
+const getSaludo = () => {
+  const hour = Number(
+    moment.tz(TIMEZONE).format('HH')
+  )
+
+  if (hour <= 2) {
+    return 'Lɪɴᴅᴀ Nᴏᴄʜᴇ 🌃'
+  }
+
+  if (hour <= 6) {
+    return 'Lɪɴᴅᴀ Mᴀɴ̃ᴀɴᴀ 🌄'
+  }
+
+  if (hour === 7) {
+    return 'Lɪɴᴅᴀ Mᴀɴ̃ᴀɴᴀ 🌅'
+  }
+
+  if (hour <= 9) {
+    return 'Lɪɴᴅᴀ Mᴀɴ̃ᴀɴᴀ 🌄'
+  }
+
+  if (hour <= 13) {
+    return 'Lɪɴᴅᴏ Dɪᴀ 🌤'
+  }
+
+  if (hour <= 17) {
+    return 'Lɪɴᴅᴀ Tᴀʀᴅᴇ 🌆'
+  }
+
+  return 'Lɪɴᴅᴀ Nᴏᴄʜᴇ 🌃'
+}
+
+const getDateInfo = () => {
+  const date = moment.tz(TIMEZONE)
+
+  return {
+    date: date.toDate(),
+    dia: date.locale('es').format('dddd'),
+    fecha: date.locale('es').format('D/M/YYYY'),
+    mes: date.locale('es').format('MMMM'),
+    año: date.format('YYYY'),
+    tiempo: date.format('h:mm:ss A')
+  }
+}
+
+const getBotNumber = conn => {
+  const jid =
+    conn?.user?.jid ||
+    conn?.user?.id ||
+    ''
+
+  return String(jid).split('@')[0]
+}
+
+const loadRandomIcon = async () => {
   try {
-    const dbPath = './src/database/db.json'
-    if (fs.existsSync(dbPath)) {
-      const db_ = JSON.parse(fs.readFileSync(dbPath))
-      const links = db_?.links?.imagen
-      if (links?.length) {
-        const link = pickRandom(links)
-        const res = await fetch(link).catch(() => null)
-        const buf = await res?.buffer().catch(() => null)
-        if (buf) global.icons = buf
+    if (!fs.existsSync(DATABASE_PATH)) {
+      return null
+    }
+
+    const content = fs.readFileSync(
+      DATABASE_PATH,
+      'utf8'
+    )
+
+    const database = JSON.parse(content)
+    const links = database?.links?.imagen
+
+    if (!Array.isArray(links) || !links.length) {
+      return null
+    }
+
+    const url = pickRandom(links)
+
+    if (!url) return null
+
+    const response = await fetch(url)
+
+    if (!response.ok) {
+      return null
+    }
+
+    return await response.buffer()
+  } catch {
+    return null
+  }
+}
+
+global.getBuffer = async function getBuffer(url, options = {}) {
+  try {
+    if (!url) return null
+
+    const response = await axios({
+      method: 'GET',
+      url,
+      headers: {
+        DNT: '1',
+        'User-Agent': 'Mozilla/5.0',
+        'Upgrade-Insecure-Requests': '1'
+      },
+      responseType: 'arraybuffer',
+      timeout: 15000,
+      ...options
+    })
+
+    return response.data
+  } catch (error) {
+    console.error(
+      '[getBuffer]',
+      error?.message || error
+    )
+
+    return null
+  }
+}
+
+global.getJson = async function getJson(url, options = {}) {
+  try {
+    if (!url) return null
+
+    const response = await axios({
+      method: 'GET',
+      url,
+      headers: {
+        'User-Agent': 'Mozilla/5.0'
+      },
+      timeout: 15000,
+      ...options
+    })
+
+    return response.data
+  } catch {
+    return null
+  }
+}
+
+global.ucapan = getGreeting
+global.runtime = formatRuntime
+
+global.creador = 'Wa.me/525544876071'
+global.asistencia = 'Wa.me/525544876071'
+
+global.ofcbot = ''
+
+global.namechannel = '⏤͟͞㋡ 𝐓𝐇𝐄 𝐋𝐄𝐆𝐄𝐍𝐃𝐒 '
+global.namegrupo = ' 𝕭𝖑𝖆𝖈𝖐 𝕮𝖑𝖔𝖛𝖊𝖗 ☘︎'
+global.namecomu = '𝗖𝗼𝗺𝘂𝗻𝗶𝗱𝗮𝗱 ⏤͟͞ 𝐓𝐇𝐄 𝐋𝐄𝐆𝐄𝐍𝐃𝐒 '
+global.listo = '⚔️ *Aquí tienes perra*'
+
+global.canalIdM = CHANNELS.map(channel => channel.id)
+global.canalNombreM = CHANNELS.map(channel => channel.name)
+
+global.idchannel = CHANNELS[0].id
+global.channelRD = getRandomChannel()
+
+const dateInfo = getDateInfo()
+
+global.d = dateInfo.date
+global.locale = 'es'
+global.dia = dateInfo.dia
+global.fecha = dateInfo.fecha
+global.mes = dateInfo.mes
+global.año = dateInfo.año
+global.tiempo = dateInfo.tiempo
+
+global.rwait = '⏳'
+global.done = '✅'
+global.error = '✖️'
+
+global.emoji = '🥷'
+global.emoji2 = '👻'
+global.emoji3 = '⚔️'
+global.emoji4 = '🍭'
+global.emojis = pickRandom(EMOJIS)
+
+global.redes = pickRandom(SOCIAL_LINKS)
+
+global.icons = null
+
+const initialIcon = await loadRandomIcon()
+
+if (initialIcon) {
+  global.icons = initialIcon
+}
+
+const handler = m => m
+
+handler.all = async function (m) {
+  try {
+    if (!m) return
+
+    const channel = global.channelRD || CHANNELS[0]
+
+    const sender = String(
+      m.sender || ''
+    )
+
+    const chat = String(
+      m.chat || ''
+    )
+
+    const nombre = m.pushName || 'Anónimo'
+
+    global.ofcbot = getBotNumber(this)
+
+    global.nombre = nombre
+
+    global.taguser = sender
+      ? `@${sender.split('@')[0]}`
+      : '@usuario'
+
+    const more = String.fromCharCode(8206)
+
+    global.readMore = more.repeat(850)
+
+    const senderNumber = sender
+      .split('@')[0]
+      .replace(/\D/g, '')
+
+    global.fkontak = {
+      key: {
+        participant: '0@s.whatsapp.net',
+        ...(chat ? { remoteJid: chat } : {})
+      },
+      message: {
+        contactMessage: {
+          displayName: nombre,
+          vcard: [
+            'BEGIN:VCARD',
+            'VERSION:3.0',
+            `N:XL;${nombre},;;;`,
+            `FN:${nombre}`,
+            `item1.TEL;waid=${senderNumber}:${senderNumber}`,
+            'item1.X-ABLabel:Ponsel',
+            'END:VCARD'
+          ].join('\n'),
+          jpegThumbnail: null,
+          thumbnail: null,
+          sendEphemeral: true
+        }
       }
     }
-  } catch { global.icons = null }
 
-  const hourNow = new Date().getHours()
-  global.saludo = hourNow <= 2? 'Lɪɴᴅᴀ Nᴏᴄʜᴇ 🌃' : hourNow <= 6? 'Lɪɴᴅᴀ Mᴀɴ̃ᴀɴᴀ 🌄' : hourNow == 7? 'Lɪɴᴅᴀ Mᴀɴ̃ᴀɴᴀ 🌅' : hourNow <= 9? 'Lɪɴᴅᴀ Mᴀɴ̃ᴀɴᴀ 🌄' : hourNow <= 13? 'Lɪɴᴅᴏ Dɪᴀ 🌤' : hourNow <= 17? 'Lɪɴᴅᴀ Tᴀʀᴅᴇ 🌆' : 'Lɪɴᴅᴀ Nᴏᴄʜᴇ 🌃'
+    global.fake = {
+      contextInfo: {
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: channel.id,
+          newsletterName: channel.name,
+          serverMessageId: -1
+        },
+        quoted: m
+      }
+    }
 
-  global.nombre = m.pushName || 'Anónimo'
-  global.taguser = '@' + m.sender.split("@s.whatsapp.net")[0]
-  global.readMore = String.fromCharCode(8206).repeat(850)
+    global.icono = pickRandom(ICON_URLS)
 
-  global.fkontak = { key: { participant: `0@s.whatsapp.net`,...(m.chat? { remoteJid: m.chat } : {}) }, message: { 'contactMessage': { 'displayName': `${nombre}`, 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;${nombre},;;;\nFN:${nombre},\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, 'jpegThumbnail': null, thumbnail: null, sendEphemeral: true } } }
-  global.fake = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, newsletterName: channelRD.name, serverMessageId: -1 }, quoted: m } }
-  global.icono = pickRandom(['https://raw.githubusercontent.com/JTxs00/uploads/main/1776302012214.jpeg'])
-  global.rcanal = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, serverMessageId: 100, newsletterName: channelRD.name }, externalAdReply: { showAdAttribution: true, title: "𝕭𝖑𝖆𝖈𝖐 𝕮𝖑𝖔𝖛𝖊𝖗 ☘", body: "𝐓𝐇𝐄 𝐂𝐀𝐑𝐋𝐎𝐒", mediaUrl: null, description: null, previewType: "PHOTO", thumbnailUrl: icono, sourceUrl: redes, mediaType: 1, renderLargerThumbnail: false } } }
+    global.rcanal = {
+      contextInfo: {
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: channel.id,
+          serverMessageId: 100,
+          newsletterName: channel.name
+        },
+        externalAdReply: {
+          showAdAttribution: true,
+          title: '𝕭𝖑𝖆𝖈𝖐 𝕮𝖑𝖔𝖛𝖊𝖗 ☘',
+          body: '𝐓𝐇𝐄 𝐂𝐀𝐑𝐋𝐎𝐒',
+          mediaUrl: null,
+          description: null,
+          previewType: 'PHOTO',
+          thumbnailUrl: global.icono,
+          sourceUrl: global.redes,
+          mediaType: 1,
+          renderLargerThumbnail: false
+        }
+      }
+    }
+
+    global.saludo = getSaludo()
+  } catch (error) {
+    console.error(
+      '[GLOBAL HANDLER]',
+      error?.message || error
+    )
+  }
 }
 
 export default handler

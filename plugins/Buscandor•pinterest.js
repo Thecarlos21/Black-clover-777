@@ -1,146 +1,316 @@
-import fetch from 'node-fetch'
+import { pinterest } from 'btch-downloader'
+import crypto from 'crypto'
+
+const extractPinterestImages = (data) => {
+  const images = new Set()
+
+  const scan = (value) => {
+    if (!value) return
+
+    if (typeof value === 'string') {
+      if (
+        value.startsWith('http') &&
+        value.includes('pinimg.com') &&
+        !value.includes('/75x75') &&
+        !value.includes('/30x30') &&
+        !value.includes('/60x60')
+      ) {
+        images.add(value)
+      }
+      return
+    }
+
+    if (Array.isArray(value)) {
+      for (const item of value) scan(item)
+      return
+    }
+
+    if (typeof value !== 'object') return
+
+    for (const [key, item] of Object.entries(value)) {
+      if (
+        typeof item === 'string' &&
+        item.startsWith('http') &&
+        item.includes('pinimg.com') &&
+        !item.includes('/75x75') &&
+        !item.includes('/30x30') &&
+        !item.includes('/60x60')
+      ) {
+        images.add(item)
+      }
+
+      scan(item)
+    }
+  }
+
+  scan(data)
+
+  return [...images]
+}
+
+const getPinterestImages = async (query) => {
+  const data = await pinterest(query)
+  return extractPinterestImages(data)
+}
+
+const getOriginalUrl = (url) => {
+  if (!url.includes('pinimg.com')) return url
+
+  return url
+    .replace(/\/\d+x\d+_RS\//, '/originals/')
+    .replace(/\/\d+x\d+\//, '/originals/')
+}
+
+const downloadImage = async (url) => {
+  const originalUrl = getOriginalUrl(url)
+
+  const response = await fetch(originalUrl, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0.0.0 Safari/537.36',
+      'Referer': 'https://www.pinterest.com/'
+    }
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`)
+  }
+
+  return {
+    buffer: Buffer.from(await response.arrayBuffer()),
+    url: originalUrl
+  }
+}
+
+const getDifferentImages = async (urls) => {
+  const results = []
+  const hashes = new Set()
+
+  for (const url of urls) {
+    try {
+      const { buffer, url: originalUrl } = await downloadImage(url)
+
+      const hash = crypto
+        .createHash('sha1')
+        .update(buffer)
+        .digest('hex')
+
+      if (hashes.has(hash)) continue
+
+      hashes.add(hash)
+
+      results.push({
+        buffer,
+        url: originalUrl
+      })
+
+      if (results.length >= 8) break
+    } catch {}
+  }
+
+  return results
+}
 
 let handler = async (m, { conn, args, usedPrefix, command }) => {
-  const emoji = '⚠️'
-  const rwait = '⏳'
-  const done = '✅'
-  const error = '❌'
-  const dev = 'by The Carlos 👑'
-
   const text = args.join(' ').trim()
 
   if (!text) {
-    return conn.reply(m.chat, `${emoji} Ingresa un término de búsqueda en Pinterest.\n\nEj: *${usedPrefix + command} black clover*`, m)
+    return conn.reply(
+      m.chat,
+      `⚠️ Ingresa algo para buscar en Pinterest.\n\nEjemplo:\n${usedPrefix + command} black clover`,
+      m
+    )
   }
 
-  await m.react(rwait)
+  await m.react('⏳')
 
   try {
-    const res = await fetch(
-      `https://anabot.my.id/api/search/pinterest?query=${encodeURIComponent(text)}&apikey=freeApikey`,
-      { timeout: 15000 }
-    )
+    const images = await getPinterestImages(text)
 
-    const json = await res.json()
-
-    if (!json.success ||!json.data?.result?.length) {
-      await m.react(error)
-      return conn.reply(m.chat, `${emoji} Sin resultados para: ${text}`, m)
+    if (!images.length) {
+      await m.react('❌')
+      return conn.reply(
+        m.chat,
+        `⚠️ Sin resultados para: ${text}`,
+        m
+      )
     }
 
-    const results = json.data.result
-    const pin = results[Math.floor(Math.random() * results.length)]
+    const differentImages = await getDifferentImages(images)
 
-    const imageUrl =
-      pin.images?.['736x']?.url ||
-      pin.images?.['345x']?.url ||
-      pin.images?.['236x']?.url
-
-    if (!imageUrl) {
-      await m.react(error)
-      return conn.reply(m.chat, `${emoji} No se pudo obtener la imagen.`, m)
+    if (!differentImages.length) {
+      await m.react('❌')
+      return conn.reply(
+        m.chat,
+        `⚠️ No pude encontrar una imagen HD válida para: ${text}`,
+        m
+      )
     }
 
-    let txt = `乂 *P I N T E R E S T* 乂\n\n`
-    txt += `*» Búsqueda* : ${text}\n`
-    if (pin.description) txt += `*» Descripción* : ${pin.description.slice(0, 100)}\n`
-    if (pin.native_creator?.full_name) txt += `*» Autor* : ${pin.native_creator.full_name}\n`
-    if (pin.aggregated_pin_data?.aggregated_stats?.saves) txt += `*» Guardados* : ${pin.aggregated_pin_data.aggregated_stats.saves}\n`
-    if (pin.created_at) txt += `*» Fecha* : ${pin.created_at}\n`
-    txt += `\n> *${dev}*`
-
-    const buttons = [
-      { buttonId: `${usedPrefix + command} ${text}`, buttonText: { displayText: '🔄 Otra imagen' }, type: 1 },
-      { buttonId: `${usedPrefix}pinmore ${text}`, buttonText: { displayText: '📸 Ver 5 más' }, type: 1 },
-      { buttonId: `${usedPrefix}pindl ${imageUrl}`, buttonText: { displayText: '⬇️ Descargar HD' }, type: 1 }
-    ]
+    const selected =
+      differentImages[
+        Math.floor(Math.random() * differentImages.length)
+      ]
 
     await conn.sendMessage(
       m.chat,
       {
-        image: { url: imageUrl },
-        caption: txt,
-        footer: '𝕭𝖑𝖆𝖈𝖐 𝕮𝖑𝖔𝖛𝖊𝖗 | 𝕳𝖆𝖐 v777 🥷🏻',
-        buttons: buttons,
-        headerType: 4
+        image: selected.buffer,
+        caption:
+          `乂 *P I N T E R E S T* 乂\n\n` +
+          `🔍 *Búsqueda:* ${text}\n` +
+          `✨ *Calidad:* HD\n\n` +
+          `> *by The Carlos 👑*`
       },
       { quoted: m }
     )
 
-    await m.react(done)
+    await m.react('✅')
 
   } catch (e) {
-    console.error(e)
-    await m.react(error)
-    conn.reply(m.chat, `${emoji} Error:\n${e.message}`, m)
+    console.error('Pinterest:', e)
+
+    await m.react('❌')
+
+    return conn.reply(
+      m.chat,
+      `❌ Error al buscar la imagen:\n${e.message}`,
+      m
+    )
   }
 }
 
-handler.pinmore = async (m, { conn, args }) => {
+handler.pinmore = async (m, { conn, args, usedPrefix }) => {
   const text = args.join(' ').trim()
-  if (!text) return m.reply('❌ Usa el botón o escribe la búsqueda')
+
+  if (!text) {
+    return m.reply(
+      `⚠️ Escribe una búsqueda.\n\nEjemplo:\n${usedPrefix}pinmore black clover`
+    )
+  }
 
   await m.react('⏳')
+
   try {
-    const res = await fetch(`https://anabot.my.id/api/search/pinterest?query=${encodeURIComponent(text)}&apikey=freeApikey`)
-    const json = await res.json()
+    const images = await getPinterestImages(text)
 
-    if (!json.success ||!json.data?.result?.length) {
-      return m.reply('❌ Sin resultados')
+    if (!images.length) {
+      await m.react('❌')
+      return m.reply(`❌ Sin resultados para: ${text}`)
     }
 
-    const images = json.data.result.slice(0, 5)
+    const differentImages = await getDifferentImages(images)
 
-    for (let i = 0; i < images.length; i++) {
-      const imageUrl = images[i].images?.['736x']?.url || images[i].images?.['345x']?.url
-      if (!imageUrl) continue
-      
-      await conn.sendMessage(m.chat, {
-        image: { url: imageUrl },
-        caption: `📸 *Imagen ${i + 1}/5*\n🔍 ${text}`
-      }, { quoted: m })
-      await new Promise(r => setTimeout(r, 1000))
+    if (!differentImages.length) {
+      await m.react('❌')
+      return m.reply(`❌ No encontré imágenes HD válidas.`)
     }
+
+    const selected =
+      differentImages[
+        Math.floor(Math.random() * differentImages.length)
+      ]
+
+    await conn.sendMessage(
+      m.chat,
+      {
+        image: selected.buffer,
+        caption:
+          `📸 *Pinterest HD*\n\n` +
+          `🔍 *Búsqueda:* ${text}\n` +
+          `✨ *Calidad original*\n\n` +
+          `> *by The Carlos 👑*`
+      },
+      { quoted: m }
+    )
+
     await m.react('✅')
-  } catch {
+
+  } catch (e) {
+    console.error('Pinterest More:', e)
+
     await m.react('❌')
-    m.reply('❌ Error al cargar más imágenes')
+
+    return m.reply(
+      `❌ Error al buscar la imagen:\n${e.message}`
+    )
   }
 }
 
 handler.pindl = async (m, { conn, args }) => {
-  const url = args[0]
-  if (!url) return m.reply('❌ URL inválida')
+  const url = args.join(' ').trim()
+
+  if (!url || !url.startsWith('http')) {
+    return m.reply('❌ URL inválida')
+  }
 
   await m.react('⏳')
+
   try {
-    await conn.sendMessage(m.chat, {
-      document: { url: url },
-      mimetype: 'image/jpeg',
-      fileName: `pinterest_${Date.now()}.jpg`,
-      caption: '⬇️ *Descarga HD*\n\n> by The Carlos 👑'
-    }, { quoted: m })
+    const { buffer } = await downloadImage(url)
+
+    await conn.sendMessage(
+      m.chat,
+      {
+        document: buffer,
+        mimetype: 'image/jpeg',
+        fileName: `pinterest_HD_${Date.now()}.jpg`,
+        caption: '⬇️ *Pinterest HD Original*\n\n> by The Carlos 👑'
+      },
+      { quoted: m }
+    )
+
     await m.react('✅')
-  } catch {
+
+  } catch (e) {
+    console.error('Pinterest Download:', e)
+
     await m.react('❌')
-    m.reply('❌ Error al descargar')
+
+    return m.reply(
+      `❌ Error al descargar:\n${e.message}`
+    )
   }
 }
 
 handler.before = async (m, { conn }) => {
-  if (m.text?.startsWith('.pinmore ')) {
-    const args = m.text.slice(9).split(' ')
-    return handler.pinmore(m, { conn, args, usedPrefix: '.' })
+  const text = m.text || ''
+
+  if (text.startsWith('.pinmore ')) {
+    const args = text.slice(9).trim().split(/\s+/)
+
+    return handler.pinmore(m, {
+      conn,
+      args,
+      usedPrefix: '.'
+    })
   }
-  if (m.text?.startsWith('.pindl ')) {
-    const args = m.text.slice(7).split(' ')
-    return handler.pindl(m, { conn, args })
+
+  if (text.startsWith('.pindl ')) {
+    const args = text.slice(7).trim().split(/\s+/)
+
+    return handler.pindl(m, {
+      conn,
+      args
+    })
   }
 }
 
-handler.help = ['pinterest <búsqueda>', 'pin <búsqueda>']
+handler.help = [
+  'pinterest <búsqueda>',
+  'pin <búsqueda>',
+  'pinmore <búsqueda>',
+  'pindl <url>'
+]
+
 handler.tags = ['search']
-handler.command = ['pinterest', 'pin','pindl', 'pinmore']
+
+handler.command = [
+  'pinterest',
+  'pin',
+  'pinmore',
+  'pindl'
+]
+
 handler.limit = true
 
 export default handler
