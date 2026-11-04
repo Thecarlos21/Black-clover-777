@@ -1,5 +1,5 @@
 //código creado x The Carlos 👑
-//no olvides dejar créditos 
+//no olvides dejar cré
 
 import fs from 'fs'
 import path from 'path'
